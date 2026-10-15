@@ -1,0 +1,257 @@
+/* VS Code layout, colored from the app's theme variables (light/dark + accent palette). */
+.mbe {
+  --mbe-bg: var(--panel);
+  --mbe-side: var(--panel-strong);
+  --mbe-tab: var(--bg-2);
+  --mbe-fg: var(--text);
+  --mbe-bright: var(--text);
+  --mbe-dim: var(--dim);
+  --mbe-line: var(--border);
+  --mbe-hover: var(--hover);
+  --mbe-sel: var(--hover);
+  --mbe-sel-active: var(--accent-soft);
+  --mbe-accent: var(--green);
+  --mbe-press: color-mix(in srgb, var(--text) 14%, transparent);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  position: relative;
+  background: var(--mbe-bg);
+  color: var(--mbe-fg);
+  font: 13px/1.4 var(--ui-font, "Segoe UI", system-ui, sans-serif);
+}
+.mbe [hidden] { display: none !important; }
+.mbe .material-icons { font-size: 16px; }
+.mbe ::-webkit-scrollbar { width: 10px; height: 10px; }
+.mbe ::-webkit-scrollbar-thumb { background: var(--border); }
+.mbe ::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
+.mbe ::-webkit-scrollbar-track { background: transparent; }
+
+.mbe-main { flex: 1; min-height: 0; display: flex; }
+.mbe-center { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+/* ---------- explorer ---------- */
+.mbe-side {
+  width: 240px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--mbe-side);
+  min-height: 0;
+}
+.mbe-side-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 35px;
+  padding: 0 8px 0 20px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--mbe-dim);
+}
+.mbe-rootrow {
+  display: flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 6px 0 2px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--mbe-fg);
+  background: var(--bg-2);
+  border-top: 1px solid var(--mbe-line);
+  border-bottom: 1px solid transparent;
+}
+.mbe-rootname { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mbe-rootacts { display: none; align-items: center; }
+.mbe-rootrow:hover .mbe-rootacts { display: flex; }
+.mbe-tree { flex: 1; min-height: 0; overflow: auto; padding-top: 2px; }
+.mbe-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 22px;
+  padding-right: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+}
+.mbe-row:hover { background: var(--mbe-hover); }
+.mbe-row.active { background: var(--mbe-sel); color: var(--mbe-bright); }
+.mbe-tree:focus-within .mbe-row.active { background: var(--mbe-sel-active); }
+.mbe-chev { color: var(--mbe-dim); }
+.mbe-chev-sp { width: 16px; flex-shrink: 0; }
+.mbe-ico.dir { color: var(--yellow); }
+.mbe-ico { color: var(--mbe-dim); }
+.mbe-label { overflow: hidden; text-overflow: ellipsis; }
+.mbe-note { padding: 14px 20px; color: var(--mbe-dim); line-height: 1.5; }
+.mbe-note p { margin: 0 0 12px; }
+.mbe-btn.wide { display: block; width: 100%; margin-bottom: 8px; text-align: center; }
+
+.mbe-split {
+  width: 5px;
+  margin: 0 -2px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 5;
+  cursor: col-resize;
+  background: transparent;
+  border-left: 1px solid var(--mbe-line);
+  transition: background 0.15s ease 0.1s;
+}
+.mbe-split:hover, .mbe-split:active { background: var(--mbe-accent); }
+
+/* ---------- tabs ---------- */
+.mbe-bar { display: flex; align-items: stretch; height: 35px; background: var(--mbe-side); flex-shrink: 0; }
+.mbe-tabs { display: flex; flex: 1; min-width: 0; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
+.mbe-tabs::-webkit-scrollbar { display: none; }
+.mbe-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 6px 0 12px;
+  background: var(--mbe-tab);
+  color: var(--mbe-dim);
+  border-right: 1px solid var(--mbe-side);
+  border-top: 1px solid transparent;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+.mbe-tab:hover { color: var(--mbe-fg); }
+.mbe-tab.active { background: var(--mbe-bg); color: var(--mbe-bright); border-top-color: var(--mbe-accent); }
+.mbe-close {
+  all: unset;
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0;
+}
+.mbe-close .x { font-size: 14px; }
+.mbe-close .dot { display: none; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.mbe-tab.active .mbe-close, .mbe-tab:hover .mbe-close { opacity: 1; }
+.mbe-tab.dirty .mbe-close { opacity: 1; }
+.mbe-tab.dirty .mbe-close .x { display: none; }
+.mbe-tab.dirty .mbe-close .dot { display: block; }
+.mbe-tab.dirty:hover .mbe-close .x { display: block; }
+.mbe-tab.dirty:hover .mbe-close .dot { display: none; }
+.mbe-close:hover { background: var(--mbe-press); }
+.mbe-actions { display: flex; align-items: center; gap: 2px; padding: 0 8px; }
+
+.mbe-ibtn {
+  all: unset;
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  color: var(--mbe-fg);
+  cursor: pointer;
+}
+.mbe-ibtn:hover { background: var(--mbe-press); }
+.mbe-ibtn.run { color: var(--green); }
+.mbe-btn:focus-visible, .mbe-tab:focus-visible, .mbe-close:focus-visible, .mbe-ibtn:focus-visible {
+  outline: 1px solid var(--mbe-accent);
+  outline-offset: -1px;
+}
+
+/* ---------- editor surface + welcome ---------- */
+.mbe-host { flex: 1; min-height: 0; position: relative; }
+.mbe-monaco { position: absolute; inset: 0; }
+.mbe-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  background: var(--mbe-bg);
+  z-index: 2;
+}
+.mbe-empty-title { font-size: 26px; font-weight: 300; color: var(--border-strong); letter-spacing: 0.02em; }
+.mbe-empty-list { display: flex; flex-direction: column; gap: 6px; min-width: 260px; }
+.mbe-empty-row {
+  all: unset;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: var(--blue);
+  cursor: pointer;
+}
+.mbe-empty-row:hover { background: var(--mbe-hover); }
+.mbe-empty-row:focus-visible { outline: 1px solid var(--mbe-accent); }
+.mbe-empty kbd { font: 12px "Segoe UI", sans-serif; color: var(--mbe-dim); }
+
+/* ---------- status bar ---------- */
+.mbe-statusbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 22px;
+  padding: 0 12px;
+  background: var(--mbe-accent);
+  color: var(--panel);
+  font-size: 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.mbe-sb-left { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+
+/* ---------- dialogs ---------- */
+.mbe-btn {
+  all: unset;
+  box-sizing: border-box;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--text);
+  background: var(--panel);
+}
+.mbe-btn:hover { background: var(--hover); border-color: var(--border-strong); }
+.mbe-btn.primary { background: var(--green); border-color: var(--green); color: var(--panel); font-weight: 600; }
+.mbe-btn.primary:hover { background: var(--green); filter: brightness(0.94); }
+.mbe-modal {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 12vh;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 20;
+}
+.mbe-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 16px 18px;
+  min-width: 320px;
+  max-width: 440px;
+  height: fit-content;
+}
+.mbe-card p { margin: 0 0 14px; line-height: 1.45; }
+.mbe-card .row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.mbe-input {
+  all: unset;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  margin-bottom: 14px;
+  padding: 5px 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--mbe-fg);
+}
+.mbe-input:focus { border-color: var(--mbe-accent); }

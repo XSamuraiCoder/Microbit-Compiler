@@ -2,6 +2,7 @@
 
 mod commands;
 mod compiler;
+mod editor;
 mod flash;
 mod process_util;
 mod state;
@@ -19,6 +20,7 @@ fn main() {
             let base = app.path().app_data_dir().expect("no app data dir");
             let engine = base.join("buildengine");
             app.manage(AppState::new(engine));
+            app.manage(editor::EditorState::default());
 
             // Silent update check a few seconds after launch; the UI decides
             // what to do with the "update-available" event.
@@ -51,6 +53,15 @@ fn main() {
             commands::delete_build,
             commands::check_update,
             commands::install_update,
+            editor::editor_open,
+            editor::editor_open_dir,
+            editor::editor_last_dir,
+            editor::editor_close_dir,
+            editor::editor_read_dir,
+            editor::editor_read_file,
+            editor::editor_save,
+            editor::editor_save_as,
+            editor::editor_create_file,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

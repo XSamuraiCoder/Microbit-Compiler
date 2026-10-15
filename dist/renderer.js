@@ -728,13 +728,13 @@ exampleModal.addEventListener("click", (event) => {
 });
 
 // ===== BUILD (TOOLBAR BUTTON) =====
-toolbarBuildBtn.onclick = () => {
+function runBuild(file) {
     if (!appSettings.allowProjectFiles) {
         log(`${c.yellow("Project file access is disabled in Settings.")}`);
         return;
     }
 
-    if (!selectedFile) {
+    if (!file) {
         log(`${c.red(`❌ No file selected.`)}`);
         return;
     }
@@ -749,8 +749,23 @@ toolbarBuildBtn.onclick = () => {
     setProgress(0);
 
     log(`${c.yellow(`🔨 Starting build...`)}`);
-    window.api.startBuild(selectedFile);
-};
+    window.api.startBuild(file).catch((err) => log(`${c.red(`❌ ${err}`)}`));
+}
+
+toolbarBuildBtn.onclick = () => runBuild(selectedFile);
+
+// Build requested from the Monaco editor panel (editor.js).
+window.addEventListener("mbe:build", async (e) => {
+    const file = e.detail.path;
+    selectedFile = file;
+    fileDisplay.textContent = file.split(/[\\/]/).pop();
+    try {
+        fileSize.textContent = formatFileSize(await window.api.fileSize(file));
+    } catch {
+        fileSize.textContent = "";
+    }
+    runBuild(file);
+});
 
 // ===== FLASH (TOOLBAR BUTTON) =====
 toolbarFlashBtn.onclick = async () => {

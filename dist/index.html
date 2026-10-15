@@ -6,6 +6,7 @@
     <title>Micro:bit Compiler Studio</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="vendor/xterm.min.css">
+    <link rel="stylesheet" href="editor.css">
     <style>
         :root {
             --bg: #f3f5f6;
@@ -147,6 +148,7 @@
         .content-section { display: none; flex: 1; min-width: 0; gap: 14px; }
         .content-section.active { display: flex; }
         #editor-view { flex-direction: column; }
+        #editor-root.panel { flex: 1; min-height: 0; }
 
         /* ---------- panels ---------- */
         .panel {
@@ -652,6 +654,9 @@
             <button class="nav-btn active" data-view="editor">
                 <span class="material-icons">terminal</span>Build
             </button>
+            <button class="nav-btn" data-view="code">
+                <span class="material-icons">code</span>Editor
+            </button>
             <button class="nav-btn" data-view="history">
                 <span class="material-icons">history</span>History
             </button>
@@ -698,6 +703,11 @@
                     </div>
                     <div id="status"></div>
                 </div>
+            </section>
+
+            <!-- EDITOR -->
+            <section class="content-section" id="code-view">
+                <div class="panel" id="editor-root"></div>
             </section>
 
             <!-- HISTORY -->
@@ -987,5 +997,11 @@
     <script src="vendor/xterm.min.js"></script>
     <script src="vendor/addon-fit.min.js"></script>
     <script src="renderer.js"></script>
+    <script src="editor.js"></script>
+    <script>
+        MbEditor.mount(document.getElementById("editor-root")).catch((err) => {
+            document.getElementById("editor-root").textContent = "Editor failed to load: " + err.message;
+        });
+    </script>
 </body>
 </html>
